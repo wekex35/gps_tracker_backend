@@ -1,0 +1,17 @@
+{
+  "name": "broker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nirmal Mandal",
+  "license": "ISC",
+  "dependencies": {
+    "ip": "^1.1.5",
+    "mosca": "^2.8.3",
+    "mqtt": "^4.2.6",
+    "redis": "^2.8.0"
+  }
+}
