@@ -42,7 +42,7 @@
             };
 
             map = new google.maps.Map(document.getElementById("map"), mapOptions);
-            var contentString = '<h5>The Mew </h5>';
+            var contentString = '<h5>Curren Location</h5>';
 
             infowindow = new google.maps.InfoWindow({
                 content: contentString
@@ -51,7 +51,7 @@
             marker = new google.maps.Marker({
                 position: myLatlng,
                 map: map,
-                title: "The Mew",
+                title: "Curren Location",
                 animation: google.maps.Animation.DROP
             });
 
@@ -81,18 +81,29 @@
                 if (lastRecievedData != payload.toString()) {
                     console.log("Postion");
                     console.log(payload.toString());
-                    var loc = JSON.parse(payload.toString());
+                    var msgLines = payload.toString().split("\n");
+                    for (let index = 0; index < msgLines.length; index++) {
+                        const element = msgLines[index];
+                        if (element.startsWith("Lat")) {
+                            lat = Number(element.split("N")[1]);
+                        }
 
-                    var lat = loc['lat'];
-                    var lng = loc['long'];
-                    var devId = loc['id'];
+                        if (element.startsWith("Lon")) {
+                            lng = Number((element.split("E")[1]).split("Speed")[0]);
+                        }
+
+                    }
+
+                    // var loc = JSON.parse(payload.toString());
+
+                    // var lat = loc['lat'];
+                    // var lng = loc['long'];
+                    // var devId = loc['id'];
                     myLatlng = new google.maps.LatLng(lat, lng);
-                    marker.setTitle(devId);
-
+                    marker.setTitle("devId");
                     marker.setPosition(myLatlng);
                     map.setCenter(myLatlng);
-                    marker.hideInfoWindow();
-                    marker.showInfoWindow();
+                
                 }
             }
             // client.end();

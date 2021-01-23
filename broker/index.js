@@ -47,15 +47,29 @@ client.on('message', function (topic, message) {
 
     try {
       ///:machine
-      var loc = JSON.parse(msg);
+      var lat = 0;
+      var lng = 0;
+      // var loc = JSON.parse(msg);
 
-      var lat = loc['lat'];
-      var lng = loc['long'];
-      var id = loc['id'];
+      // var lat = loc['lat'];
+      // var lng = loc['long'];
+      // var id = loc['id'];
+      var msgLines = msg.split("\n");
+      for (let index = 0; index < msgLines.length; index++) {
+        const element = msgLines[index];
+        if(element.startsWith("Lat")){
+          lat = Number(element.split("N")[1]);
+        }
+
+        if(element.startsWith("Lon")){
+          lng = Number((element.split("E")[1]).split("Speed")[0]);
+        }
+        
+      }
 
      
-      var columnName = "Date,Time,Device Id,Latitude,Longitude\n"
-      var dataToWrite = date + "," + time + "," + id + "," + lat +"," + lng+"\n";
+      var columnName = "Date,Time,Latitude,Longitude\n"
+      var dataToWrite = date + "," + time + "," + lat +"," + lng+"\n";
       console.log(dataToWrite);
       var path = `public/coordinates.csv`
 
@@ -110,7 +124,7 @@ client.on('message', function (topic, message) {
     server.on('ready', function(){
         console.log("(---------------------------------------------------------------)");
         console.log(" |                    Evolve Broker Ready.....                  |");
-        console.log(" |                  mqtt://"+ip.address()+": 9910                  |");
+        console.log(" |                  mqtt://"+ip.address()+":9910                  |");
         console.log("(---------------------------------------------------------------)");
     });
 
