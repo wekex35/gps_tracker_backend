@@ -30,6 +30,8 @@ client.on('connect', function () {
   console.log("Topic Ready");
   client.subscribe('csvdata')
   client.subscribe('position')
+  client.subscribe('last_position')
+
 })
 
 client.on('message', function (topic, message) {
@@ -43,7 +45,19 @@ client.on('message', function (topic, message) {
   var msg = message.toString();
   console.log("topic Recived.....", topic)
   console.log(now.toJSON() + " Message Recived.....", msg)
+  var lastPosFile = "public/last.txt";
+  //last Position
+  if (topic == "last_position"){
+    fs.readFile(lastPosFile, 'utf8', function(err, data) {
+      if (err) throw err;
+      client.publish("position",data)
+      console.log(data.split("\n").length);
+    });
+  }
   if (topic == "position") {
+    fs.writeFile(lastPosFile, msg, function (err) {
+      console.log('Raw Write Saved!');
+    });
 
     try {
       ///:machine

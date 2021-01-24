@@ -71,7 +71,14 @@
         //     map.setCenter(myLatlng);
         // }
 
-        client.publish("mqtt/demo", "hello world!");
+
+        client.on('connect', function () {
+            client.subscribe('presence', function (err) {
+                if (!err) {
+                    client.publish("last_position", "Get last Postion");
+                }
+            })
+        })
         client.on("message", function (topic, payload) {
             // alert([topic, payload].join(": "));
             console.log(payload.toString());
@@ -103,11 +110,14 @@
                     marker.setTitle("devId");
                     marker.setPosition(myLatlng);
                     map.setCenter(myLatlng);
-                
+
                 }
             }
             // client.end();
         });
+
+
+
 
     </script>
 </body>
